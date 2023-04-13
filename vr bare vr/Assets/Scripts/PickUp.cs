@@ -32,11 +32,17 @@ public class PickUp : MonoBehaviour
         {
             if (hitAButton)
             {
-                item.GetComponent<Rigidbody>().isKinematic = true;
-                item.transform.parent = gameObject.transform;
-                item.transform.position = gameObject.transform.position;
+                if (!isHoldingSomething)
+                {
+                    item.GetComponent<Rigidbody>().isKinematic = true;
+                    item.transform.parent = gameObject.transform;
+                    item.transform.position = gameObject.transform.position;
 
-                isHoldingSomething = true;
+                    item.GetComponent<Outline>().enabled = false;
+
+                    isHoldingSomething = true;
+                }
+                
             }
         }
         if (!hitAButton)
@@ -56,11 +62,22 @@ public class PickUp : MonoBehaviour
     {
         if(other.tag == "PickUp")
         {
-            item = other.gameObject;
+            if (!isHoldingSomething)
+            {
+                if (item != null)
+                {
+                    item.GetComponent<Outline>().enabled = false;
+                }
+                   
+                item = other.gameObject;
 
-            hittingSomething = true;
-            Debug.Log("hit something");
-            gameObject.GetComponent<Renderer>().material.color = new Color(255f / 255f, 8f / 255f, 0f / 255f);
+                hittingSomething = true;
+                Debug.Log("hit something");
+                gameObject.GetComponent<Renderer>().material.color = new Color(255f / 255f, 8f / 255f, 0f / 255f);
+
+                item.GetComponent<Outline>().enabled = true;
+            }
+           
 
         }
         
@@ -71,6 +88,8 @@ public class PickUp : MonoBehaviour
         {
             hittingSomething = false;
             gameObject.GetComponent<Renderer>().material.color = new Color(24f / 255f, 255f / 255f, 0f / 255f);
+
+            item.GetComponent<Outline>().enabled = false;
         }
        
     }
