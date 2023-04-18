@@ -9,7 +9,7 @@ public class BookSnap : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject == book)
+        if (other.gameObject.name == book.name)
         {
             snapped = true;
             book.transform.position = transform.position;
