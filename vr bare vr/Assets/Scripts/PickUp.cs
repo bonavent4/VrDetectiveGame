@@ -49,47 +49,59 @@ public class PickUp : MonoBehaviour
         {
             if (isHoldingSomething)
             {
-                item.transform.parent = null;
-                item.GetComponent<Rigidbody>().isKinematic = false;
+                if(item.transform.parent == gameObject.transform)
+                {
+                    item.transform.parent = null;
+                    item.GetComponent<Rigidbody>().isKinematic = false;
+
+                }
                 
 
+
                 isHoldingSomething = false;
-                
+
             }
         }
     }
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "PickUp")
+        if(other.gameObject.GetComponent<Grabable>())
         {
-            if (!isHoldingSomething)
+            if (!other.gameObject.GetComponent<Grabable>().grapped)
             {
-                if (item != null)
+                if (!isHoldingSomething)
                 {
-                    item.GetComponent<Outline>().enabled = false;
+                    if (item != null)
+                    {
+                        item.GetComponent<Outline>().enabled = false;
+                    }
+
+                    item = other.gameObject;
+
+                    hittingSomething = true;
+                    Debug.Log("hit something");
+                    gameObject.GetComponent<Renderer>().material.color = new Color(255f / 255f, 8f / 255f, 0f / 255f);
+
+                    item.GetComponent<Outline>().enabled = true;
+
+                   // other.gameObject.GetComponent<Grabable>().grapped = true;
                 }
-                   
-                item = other.gameObject;
-
-                hittingSomething = true;
-                Debug.Log("hit something");
-                gameObject.GetComponent<Renderer>().material.color = new Color(255f / 255f, 8f / 255f, 0f / 255f);
-
-                item.GetComponent<Outline>().enabled = true;
             }
-           
-
         }
         
     }
     private void OnTriggerExit(Collider other)
     {
-        if (other.tag == "PickUp")
+        if (other.gameObject.GetComponent<Grabable>())
         {
-            hittingSomething = false;
-            gameObject.GetComponent<Renderer>().material.color = new Color(24f / 255f, 255f / 255f, 0f / 255f);
+            
+                hittingSomething = false;
+                gameObject.GetComponent<Renderer>().material.color = new Color(24f / 255f, 255f / 255f, 0f / 255f);
 
-            item.GetComponent<Outline>().enabled = false;
+                item.GetComponent<Outline>().enabled = false;
+            //other.gameObject.GetComponent<Grabable>().grapped = false;
+
+
         }
        
     }

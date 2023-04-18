@@ -20,7 +20,8 @@ public class Movement : MonoBehaviour
 
         if(analogdata.x > 0)
         {
-           // Player.transform.position.x += analogdata.x * speed * Time.deltaTime;
+            // Player.transform.position.x += analogdata.x * speed * Time.deltaTime;
+           // Player.transform.forward +=
         }
     }
 }
