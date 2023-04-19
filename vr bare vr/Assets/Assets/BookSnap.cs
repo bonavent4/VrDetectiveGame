@@ -7,27 +7,28 @@ public class BookSnap : MonoBehaviour
     public GameObject book;
     private bool snapped = false;
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.name == book.name)
-        {
-            snapped = true;
-            book.transform.position = transform.position;
-           
-        }
+        
+            if (other.gameObject.name == book.name)
+            {
+                //book.transform.position = transform.position;
+                book = other.gameObject;
+                snapped = true;
+                book.transform.position = transform.position;
+
+            }
+        
+    
+       
     }
 
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject == book)
         {
-            snapped = false;
+            //snapped = false;
         }
-    }
-
-    public bool IsSnapped()
-    {
-        return snapped;
     }
 
     public void DetachBook()
