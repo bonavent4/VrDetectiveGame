@@ -5,12 +5,13 @@ using UnityEngine;
 public class BookSnap : MonoBehaviour
 {
     public GameObject book;
+    public int snapNumber;
     private bool snapped = false;
 
     private void OnTriggerStay(Collider other)
     {
         
-            if (other.gameObject.name == book.name)
+            if (other.gameObject.tag == "PickUp")
             {
                 //book.transform.position = transform.position;
                 book = other.gameObject;
@@ -27,7 +28,7 @@ public class BookSnap : MonoBehaviour
     {
         if (other.gameObject == book)
         {
-            //snapped = false;
+            snapped = false;
         }
     }
 
