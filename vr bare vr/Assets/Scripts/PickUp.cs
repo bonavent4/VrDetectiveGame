@@ -17,7 +17,14 @@ public class PickUp : MonoBehaviour
 
     GameObject item;
     bool isHoldingSomething;
-  
+
+    bool touchingSnapingPoint;
+
+    GameObject snapThing;
+
+    [SerializeField] LayerMask nonTouch;
+    [SerializeField] LayerMask DoTouch;
+
     void Update()
     {
         RightHandController.inputDevice.IsPressed(button, out hitAButton);
@@ -40,6 +47,10 @@ public class PickUp : MonoBehaviour
 
                     item.GetComponent<Outline>().enabled = false;
 
+                    //item.layer = LayerMask.NameToLayer("NonTouch");
+
+                    item.GetComponent<Grabable>().TakeOffShelf();
+
                     isHoldingSomething = true;
                 }
                 
@@ -47,14 +58,23 @@ public class PickUp : MonoBehaviour
         }
         if (!hitAButton)
         {
-            if (isHoldingSomething)
+           
+             if (isHoldingSomething)
             {
-                if(item.transform.parent == gameObject.transform)
+                if (touchingSnapingPoint)
                 {
-                    item.transform.parent = null;
-                    item.GetComponent<Rigidbody>().isKinematic = false;
+                    snapThing.GetComponent<Snaping>().Snap(item);
+                }
+                else if (item.transform.parent == gameObject.transform)
+                {
+                        item.transform.parent = null;
+                        item.GetComponent<Rigidbody>().isKinematic = false;
+                   // item.layer = LayerMask.NameToLayer("smth");
 
                 }
+                
+
+               
                 
 
 
@@ -79,7 +99,7 @@ public class PickUp : MonoBehaviour
                     item = other.gameObject;
 
                     hittingSomething = true;
-                    Debug.Log("hit something");
+                   // Debug.Log("hit something");
                     gameObject.GetComponent<Renderer>().material.color = new Color(255f / 255f, 8f / 255f, 0f / 255f);
 
                     item.GetComponent<Outline>().enabled = true;
@@ -88,6 +108,15 @@ public class PickUp : MonoBehaviour
                 }
             }
         }
+
+        if (other.gameObject.tag == "snapping")
+        {
+            snapThing = other.gameObject;
+            touchingSnapingPoint = true;
+            //Debug.Log("snapsmth works");
+            
+        }
+        //Debug.Log(other.gameObject.name);
         
     }
     private void OnTriggerExit(Collider other)
@@ -102,6 +131,10 @@ public class PickUp : MonoBehaviour
             //other.gameObject.GetComponent<Grabable>().grapped = false;
 
 
+        }
+        if (other.gameObject.GetComponent<Snaping>())
+        {
+            touchingSnapingPoint = false;
         }
        
     }

@@ -14,14 +14,22 @@ public class Movement : MonoBehaviour
 
     [SerializeField] float speed;
 
+    private void Start()
+    {
+       
+    }
+
     private void Update()
     {
         xrController.inputDevice.TryReadAxis2DValue(analogstick, out analogdata);
 
-        if(analogdata.x > 0)
-        {
-            // Player.transform.position.x += analogdata.x * speed * Time.deltaTime;
-           // Player.transform.forward +=
-        }
+       // if(analogdata.x > 0 | analogdata.y > 0)
+        //{
+            Debug.Log(analogdata.x);
+        // Player.transform.position.x += analogdata.x * speed * Time.deltaTime;
+        Player.transform.position += cam.transform.forward * analogdata.y * speed * Time.deltaTime;
+        Player.transform.position += cam.transform.right * analogdata.x * speed * Time.deltaTime;
+        //}
+
     }
 }
