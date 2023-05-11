@@ -25,7 +25,7 @@ public class Movement : MonoBehaviour
 
        // if(analogdata.x > 0 | analogdata.y > 0)
         //{
-            Debug.Log(analogdata.x);
+          //  Debug.Log(analogdata.x);
         // Player.transform.position.x += analogdata.x * speed * Time.deltaTime;
         Player.transform.position += cam.transform.forward * analogdata.y * speed * Time.deltaTime;
         Player.transform.position += cam.transform.right * analogdata.x * speed * Time.deltaTime;

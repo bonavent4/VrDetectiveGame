@@ -10,7 +10,7 @@ public class Snaping : MonoBehaviour
   public void Snap(GameObject item)
     {
         theItem = item;
-        item.transform.parent = null;
+        item.transform.parent = gameObject.transform.parent.transform;
         item.GetComponent<Rigidbody>().isKinematic = true;
         item.transform.position = gameObject.transform.position;
 

@@ -7,6 +7,9 @@ TagManager:
   - PickUp
   - snap
   - Book
+  - snapping
+  - HandleHolder
+  - Key
   layers:
   - Default
   - TransparentFX
@@ -14,11 +17,11 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
-  - 
+  - SafeBox
+  - SafeHandle
+  - Player
+  - Hands
+  - Items
   - 
   - 
   - 

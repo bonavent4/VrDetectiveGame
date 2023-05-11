@@ -8,7 +8,7 @@ public class PickUp : MonoBehaviour
 {
     [SerializeField] XRController RightHandController;
     [SerializeField] InputHelpers.Button button;
-    bool hitAButton;
+    [SerializeField] bool hitAButton;
 
     //[SerializeField] GameObject RightController;
     //[SerializeField] Material CubeMat;
@@ -24,6 +24,14 @@ public class PickUp : MonoBehaviour
 
     [SerializeField] LayerMask nonTouch;
     [SerializeField] LayerMask DoTouch;
+
+    // hold a door
+    [SerializeField] bool opendoor;
+    GameObject DoorHandleHolder;
+
+    bool isOnHand;
+    
+    
 
     void Update()
     {
@@ -82,6 +90,43 @@ public class PickUp : MonoBehaviour
 
             }
         }
+
+        // Hold a Door
+        if(hitAButton && opendoor && (Vector3.Distance(DoorHandleHolder.transform.position, DoorHandleHolder.transform.parent.transform.position) < 1f))
+        {
+                DoorHandleHolder.transform.position = gameObject.transform.position;
+            isOnHand = true;
+        }
+        else
+        {
+            // 
+            if (isOnHand)
+            {
+               // if (DoorHandleHolder != null)
+               // {
+
+
+
+                    DoorHandleHolder.transform.position = DoorHandleHolder.transform.parent.transform.position;
+
+                    DoorHandleHolder.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                    DoorHandleHolder.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+                    DoorHandleHolder.transform.parent.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                    DoorHandleHolder.transform.parent.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+                    DoorHandleHolder.transform.parent.transform.parent.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                    DoorHandleHolder.transform.parent.transform.parent.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+                    //opendoor = false;
+                  //  DoorHandleHolder = null;
+                    isOnHand = false;
+               // }
+            }
+            
+
+        }
+       /* if ((Vector3.Distance(DoorHandleHolder.transform.position, DoorHandleHolder.transform.parent.transform.position) > 1f))
+        {
+            opendoor = false;
+        }*/
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -116,7 +161,19 @@ public class PickUp : MonoBehaviour
             //Debug.Log("snapsmth works");
             
         }
-        //Debug.Log(other.gameObject.name);
+
+
+        // Hold A Door
+        //if (FindObjectOfType<Safe>().isCorrect)
+      //  {
+            if (other.gameObject.tag == "HandleHolder")
+            {
+                Debug.Log("hitDoor");
+                DoorHandleHolder = other.gameObject;
+                opendoor = true;
+            }
+      //  }
+       
         
     }
     private void OnTriggerExit(Collider other)
@@ -136,6 +193,21 @@ public class PickUp : MonoBehaviour
         {
             touchingSnapingPoint = false;
         }
+
+        // Hold A Door
+       // if (FindObjectOfType<Safe>().isCorrect)
+       // {
+            if (other.gameObject.tag == "HandleHolder")
+            {
+                if (!hitAButton)
+                {
+                    opendoor = false;
+                    isOnHand = false;
+                    DoorHandleHolder = null;
+                }
+            }
+       // }
        
+
     }
 }
